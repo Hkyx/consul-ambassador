@@ -1,0 +1,16 @@
+apiVersion: getambassador.io/v2
+kind: Host
+metadata:
+  name: op-svc.com
+spec:
+  hostname: op-svc.com
+  acmeProvider:
+    authority: none
+  tlsSecret:
+    name: svcopcom
+  requestPolicy:
+    insecure:
+      action: Reject
+      # here we redirect 8080 cleartext to tls, above we just reject it.
+      action: Redirect
+      additionalPort: 8080
