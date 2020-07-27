@@ -7,3 +7,12 @@ spec:
   hosts: []
   secret: ambassador-consul-connect
   min_tls_version: v1.2
+---
+apiVersion: getambassador.io/v2
+kind: TLSContext
+metadata:
+  name: ambassador-consul-connect
+spec:
+  hosts: []
+  secret: ambassador-consul-connect
+  min_tls_version: v1.2

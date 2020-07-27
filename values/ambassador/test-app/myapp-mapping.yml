@@ -7,6 +7,6 @@ spec:
   prefix: /qotm-consul-tls/
   service: qotm-sidecar-proxy
   resolver: consul-dev
-  tls: ambassador-consul-connect
+  tls: ambassador-context
   load_balancer:
     policy: round_robin
