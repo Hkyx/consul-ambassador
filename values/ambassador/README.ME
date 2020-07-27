@@ -1,0 +1,20 @@
+### config to deploy consul as service mesh in tls with ambassador as mapi-gateway
+
+#### Tree
+.
+└── values
+    ├── ambassador
+    │   ├── ambassador-consul-connector.yaml  - the connector to consul
+    │   ├── charts-exemples                   - example of chart for AES (we use the helm for official registry)
+    │   ├── consul_as_resolver.yml            - Resolver configuration for consul as discovery service
+    │   ├── dev.yml                           - values of the chart to deploy ambassador
+    │   ├── host-op-svc.yml                   - Configuration of our public domain
+    │   ├── README.ME                         - Doc
+    │   ├── test-app                          - Application example from datawire and hashicorp
+    │   │   ├── myapp2.yml
+    │   │   ├── myapp-mapping.yml
+    │   │   └── myapp.yml
+    │   ├── test_tls.yml                      - don't care
+    │   └── TlsContext.yml                    - tls context for ambassador to consul
+    ├── consul
+    │   └── dev.yml                           - consul deployment (values for helm chart)
