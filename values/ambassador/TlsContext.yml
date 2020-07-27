@@ -2,19 +2,8 @@
 apiVersion: getambassador.io/v2
 kind: TLSContext
 metadata:
-  name: op-svc-context
-spec:
-  hosts:
-  - op-svc.com
-  secret: svcopcom
-  min_tls_version: v1.2
----
-apiVersion: getambassador.io/v2
-kind: TLSContext
-metadata:
   name: ambassador-context
 spec:
-  hosts:
-  - consul-consul-server.default.svc.cluster.local
+  hosts: []
   secret: ambassador-consul-connect
   min_tls_version: v1.2

@@ -69,7 +69,7 @@ spec:
         app: ambassador
         component: consul-connect
       annotations:
-        "consul.hashicorp.com/connect-inject": "true"
+        "consul.hashicorp.com/connect-inject": "false"
     spec:
       serviceAccountName: ambassador-consul-connect
       terminationGracePeriodSeconds: 0

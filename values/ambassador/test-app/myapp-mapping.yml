@@ -4,9 +4,9 @@ kind: Mapping
 metadata:
   name: qotm-tls
 spec:
-  prefix: /qotm/
-  service: qotm
+  prefix: /qotm-consul-tls/
+  service: qotm-sidecar-proxy
   resolver: consul-dev
-  tls: consul-consul-server-cert #ambassador-consul
+  tls: ambassador-consul-connect
   load_balancer:
     policy: round_robin
