@@ -1,18 +1,27 @@
+#---
+#apiVersion: getambassador.io/v2
+#kind: TLSContext
+#metadata:
+#  name: ambassador-context
+#spec:
+#  hosts: []
+#  secret: ambassador-consul-connect
+#  min_tls_version: v1.2
 ---
 apiVersion: getambassador.io/v2
 kind: TLSContext
 metadata:
-  name: ambassador-context
+  name: ambassador-consul-connect-context
 spec:
-  hosts: []
-  secret: ambassador-consul-connect
+  hosts: ["consul-consul-server.default.svc.cluster.local", "*"]
+  secret: consul-consul-server-cert
   min_tls_version: v1.2
 ---
 apiVersion: getambassador.io/v2
 kind: TLSContext
 metadata:
-  name: ambassador-consul-connect
+  name: svcop-context
 spec:
   hosts: []
-  secret: ambassador-consul-connect
+  secret: svcopcom
   min_tls_version: v1.2

@@ -30,7 +30,7 @@ subjects:
 apiVersion: getambassador.io/v2
 kind: TLSContext
 metadata:
-  name: ambassador-consul
+  name: ambassador-consul-context
 spec:
   hosts: []
   #secret: consul-consul-server-cert
@@ -91,6 +91,12 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: _CONSUL_PORT
+              value: "8501"
+            - name: _CONSUL_HTTP_SSL
+              value: "true"
+            - name: _CONSUL_HTTP_SSL_VERIFY
+              value: "false"
+            - name: CONSUL_PORT
               value: "8501"
             - name: CONSUL_HTTP_SSL
               value: "true"

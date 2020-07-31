@@ -35,7 +35,7 @@ consul(){
         kubectl create namespace consul
         helm repo add hashicorp "https://helm.releases.hashicorp.com"
         update_repo
-        helm install consul hashicorp/consul -f values/consul/dev.yml
+        helm install consul hashicorp/consul -f values/consul/dev.yml #--version=0.22.0
     elif [ ${TODO} == "delete" ]
     then
         helm delete consul
@@ -46,9 +46,10 @@ consul(){
 }
 
 ambassador(){
-    TODO=$1
-    if [ ${TODO} == "install" ]
-    then
+
+#    TODO=$1
+ #   if [ ${TODO} == "install" ]
+  #  then
         # ambassador use it's own cli called Edgectl:
         #    HOMEBIN="~/bin"
         #    curl -fLO https://metriton.datawire.io/downloads/linux/edgectl
@@ -60,26 +61,47 @@ ambassador(){
         #    mv edgectl ~/bin
         # now we can deploy ambassador to k8s
         #kubectl create namespace ambassador
-        helm install ambassador datawire/ambassador -f values/ambassador/dev.yml #-n ambassador
-        sleep 180
-#        kubectl apply -f values/ambassador/ambassador-consul-connector.yaml # -n ambassador
+        #        helm install ambassador datawire/ambassador -f values/ambassador/dev.yml #-n ambassador
+
+TODO=$1
+if [ ${TODO} == "install" ]
+then
+    kubectl apply -f values/ambassador/AKS-config/1-aes-crds.yml && \
+        kubectl wait --for condition=established --timeout=90s crd -lproduct=aes && \
+        kubectl apply -f values/ambassador/AKS-config/2-aes.yml && \
+        kubectl -n default wait --for condition=available --timeout=90s deploy -l product=aes
+        kubectl apply -f values/ambassador/AKS-config/3-user.yml
+   #     kubectl apply -f values/ambassador/AKS-config/4-prometheus-crd.yml && \
+  #      kubectl wait --for condition=established  --timeout=90s crd -lproduct=aes-prometheus && \
+ #       kubectl apply -f values/ambassador/AKS-config/5-prometheus.yml
+        kubectl apply -f values/ambassador/ambassador-consul-connector.yaml
         kubectl apply -f values/ambassador/consul_as_resolver.yml
-        kubectl apply -f values/ambassador/host-op-svc.yml # -n ambassador
-    elif [ ${TODO} == "delete" ]
-    then
-        helm delete ambassador
-        kubectl delete -f values/ambassador/ambassador-consul-connector.yaml # -n ambassador
+        kubectl apply -f values/ambassador/host-op-svc.yml
+        kubectl apply -f values/ambassador/test-app/myapp.yml
+        kubectl apply -f values/ambassador/test-app/myapp-mapping.yml
+
+elif [ ${TODO} == "delete" ]
+then
+        kubectl delete -f values/ambassador/AKS-config/1-aes-crds.yml && \
+        kubectl delete -f values/ambassador/AKS-config/2-aes.yml && \
+        kubectl delete -f values/ambassador/AKS-config/3-user.yml
+#       kubectl delete -f values/ambassador/AKS-config/4-prometheus-crd.yml && \
+#        kubectl delete -f values/ambassador/AKS-config/5-prometheus.yml
+        kubectl delete -f values/ambassador/ambassador-consul-connector.yaml
         kubectl delete -f values/ambassador/consul_as_resolver.yml
-        kubectl delete -f values/ambassador/host-op-svc.yml # -n ambassador
-    else
-        echo "take a param as install or delete"
-    fi
+        kubectl delete -f values/ambassador/host-op-svc.yml
+
+
+else
+    echo "take a param as install or delete"
+fi
+
 }
 
 upload_certificates() {
     TLS_NAME=$1
     TLS_PATH="values/certs/${TLS_NAME}"
-    kubectl create secret tls ${TLS_NAME} --key ${TLS_PATH}/tls.key --cert ${TLS_PATH}/tls.crt
+    kubectl create secret tls ${TLS_NAME} --key ${TLS_PATH}/tls.key --cert ${TLS_PATH}/tls.crt -n ambassador
 }
 
 
@@ -98,7 +120,8 @@ fluent_bit(){
 #get_creds ${CLUSTER_NAME}
 #disable_windows
 #upload_certificates svcopcom
-# consul $TODO
+consul $TODO
+sleep 30
 ambassador $TODO
 
 

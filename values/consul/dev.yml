@@ -10,7 +10,7 @@ global:
   datacenter: dev
 
   image: "consul:1.8.0"
-  imageK8S: "hashicorp/consul-k8s:0.17.0"
+  imageK8S: "hashicorpdev/consul-k8s:3e25838" # 0.17.0"
   imageEnvoy: "envoyproxy/envoy-alpine:v1.14.4"
 
 

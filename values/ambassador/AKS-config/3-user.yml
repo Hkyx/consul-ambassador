@@ -1,0 +1,16 @@
+---
+apiVersion: getambassador.io/v2
+kind: Host
+metadata:
+  name: aks.svc-op.com
+  namespace: default
+spec:
+  hostname: "aks.svc-op.com"
+  acmeProvider:
+    authority: none
+  tlsSecret:
+    name: svcopcom
+  requestPolicy:
+    insecure:
+      action: Redirect
+      additionalPort: 8080
